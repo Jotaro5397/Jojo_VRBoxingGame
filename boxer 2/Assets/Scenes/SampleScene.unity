@@ -557,7 +557,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &163853803
+--- !u!114 &163853807
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -569,7 +569,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e94c44728ee9a9840962641d580650ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 0.7
+  walkSpeed: 5
+  player: {fileID: 690198140}
+  UpdateRate: 0.1
+  stopDistance: 0.2
+  DefaultState: 0
 --- !u!1001 &168848055
 PrefabInstance:
   m_ObjectHideFlags: 0

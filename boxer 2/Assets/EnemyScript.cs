@@ -4,20 +4,23 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
 
+
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyScript : MonoBehaviour
 {
     [SerializeField]
     public float walkSpeed = 5f;
     private float enemyHealth = 100f;
     private bool inRange;
-    private UnityEngine.AI.NavMeshAgent navMeshAgent;
-    Transform target;
-    UnityEngine.AI.NavMeshAgent agent;
+    public Transform player;  // Reference to the player's Transform
+    private NavMeshAgent agent;
+    public float UpdateRate = 0.1f;
     
-   
-
     Animator animator;
-    
+
+    public delegate void StateChangeEvent(EnemyState oldState, EnemyState newState);
+    public StateChangeEvent OnStateChange;
+    public float stopDistance = 0.2f;
 
     #region STATES
     [SerializeField]
@@ -52,38 +55,119 @@ public class EnemyScript : MonoBehaviour
     const string ENEMY_ISBLOCK = "CenterBlock";
     #endregion
         
-
+    private float stoppingDistance = 1.0f;
     private string currentState;
+    public EnemyState DefaultState;
+    private EnemyState _state;
+    public EnemyState State 
+    {
+        get
+        {
+            return _state;
+        }
+        set
+        {
+            OnStateChange?.Invoke(_state, value);
+            _state = value;
+        }
+    }
 
-    // Start is called before the first frame update
+    private Coroutine FollowCoroutine;
+
     void Start()
     {
-        animator = GetComponent<Animator>();
-
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        navMeshAgent.speed = walkSpeed;
-    }   
-    
-
-    
-    
-    void Update()
-    {
-        float distance = Vector3.Distance(transform.position, target.position);
-        // ask if the player is in range or not and if the enemy is dead or not
-        ChasePlayer();
         
-   
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
     }
-    void ChasePlayer()
+    private void Awake()
     {
-        agent.updateRotation = false;
-        Vector3 direction = target.position - transform.position;
-        direction.y = 0;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), walkSpeed * Time.deltaTime);
-        agent.updatePosition = false;
-       
+        
+        OnStateChange += HandleStateChange;
+        
     }
+
+    private void OnDisable()
+    {
+        _state = DefaultState; // use _state to avoid triggering OnStateChange when recycling object in the pool
+    }
+
+    public void Spawn()
+    {
+        OnStateChange?.Invoke(EnemyState.Spawn, DefaultState);
+    }
+
+    // private IEnumerator FollowTarget()
+    // {
+    //     WaitForSeconds Wait = new WaitForSeconds(UpdateRate);
+        
+    //     while (gameObject.activeSelf)
+    //     {
+    //         if (agent.enabled)
+    //         {
+    //             agent.SetDestination(Player.position);
+    //             Debug.Log("Setting destination to player position.");
+    //         }
+    //         yield return Wait;
+    //     }
+    // }
     
+    private void FollowTarget()
+    {
+        if (player != null && agent != null)
+        {
+            // Set the enemy's destination to the player's position
+            agent.SetDestination(player.position);
+        }
+        Debug.Log("Setting destination to player position.");
+        // No need for a return statement when the return type is void.
+    }
+
+    private void Update()
+    {
+        if (player != null && agent != null)
+        {
+            // Set the enemy's destination to the player's position
+            agent.SetDestination(player.position);
+        }
+
+        // Check the current state
+        switch (State)
+        {
+            case EnemyState.Idle:
+                break;
+            case EnemyState.Attacking:
+                break;
+            case EnemyState.Chase:
+                break;
+            case EnemyState.Running:
+                break;
+        }
+    }
+
+    private void HandleStateChange(EnemyState oldState, EnemyState newState)
+    {
+        if (FollowCoroutine !=null)
+        {
+            StopCoroutine(FollowCoroutine);
+        }
+        switch(newState)
+        {
+            case EnemyState.Idle:
+
+                break;
+            case EnemyState.Attacking:
+            
+                break;
+            case EnemyState.Chase:
+                FollowTarget();
+                Debug.Log("Chase Activated");
+
+                break;
+            case EnemyState.Running:
+            
+                break;
+        }
+    } 
 }
