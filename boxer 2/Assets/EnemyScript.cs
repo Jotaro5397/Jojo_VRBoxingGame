@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyScript : MonoBehaviour
 {
     [SerializeField]
-    private float walkSpeed = 5f;
+    public float walkSpeed = 5f;
     private float enemyHealth = 100f;
     private bool inRange;
     private UnityEngine.AI.NavMeshAgent navMeshAgent;
@@ -13,6 +14,7 @@ public class EnemyScript : MonoBehaviour
 
     Animator animator;
 
+    #region STATES
     [SerializeField]
     // Movement Animation States //
     const string ENEMY_IDLE = "Enemy_Idle";
@@ -43,7 +45,7 @@ public class EnemyScript : MonoBehaviour
     //Block Aimation Sates//
     //======================================================//
     const string ENEMY_ISBLOCK = "CenterBlock";
-    
+    #endregion
         
 
     private string currentState;
@@ -55,6 +57,7 @@ public class EnemyScript : MonoBehaviour
 
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        navMeshAgent.speed = walkSpeed;
     }
 
     void ChangeAnimationState(string newState)
@@ -71,8 +74,31 @@ public class EnemyScript : MonoBehaviour
     {
         if (player != null)
         {
-            // Set the destination of the NavMeshAgent to the player's position.
-            navMeshAgent.SetDestination(player.position);
+            // Get the player's movement input (you need to implement this based on your input system).
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+
+            // Determine the animation state based on player's movement input.
+            if (Mathf.Approximately(horizontalInput, 0f) && Mathf.Approximately(verticalInput, 0f))
+            {
+                ChangeAnimationState(ENEMY_IDLE);
+            }
+            else if (verticalInput > 0)
+            {
+                ChangeAnimationState(ENEMY_WALKFORWARD);
+            }
+            else if (verticalInput < 0)
+            {
+                ChangeAnimationState(ENEMY_STEPBACK);
+            }
+            else if (horizontalInput < 0)
+            {
+                ChangeAnimationState(ENEMY_STEPLEFT);
+            }
+            else if (horizontalInput > 0)
+            {
+                ChangeAnimationState(ENEMY_STEPRIGHT);
+            }
         }
     }
 }
