@@ -1068,39 +1068,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.85, z: 0}
---- !u!114 &163853812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 163853799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6682b544614c664eaaae6951ec2e92e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: {fileID: 1334117325}
---- !u!114 &163853813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 163853799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40f5a1cf7cb76564fa46ed1f33626fb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackState: {fileID: 978229964}
-  enemy: {fileID: 163853806}
-  player: {fileID: 2134221131}
-  chaseSpeed: 1
-  rotationSpeed: 71.45
-  attackRange: 2
-  isInAttackRange: 0
-  animator: {fileID: 163853800}
 --- !u!54 &163853814
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1117,6 +1084,37 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &163853815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163853799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6682b544614c664eaaae6951ec2e92e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: {fileID: 1334117325}
+--- !u!114 &163853817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163853799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 368b84acfe6f29d4b8e51619eb617917, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthLevel: 10
+  maxHealth: 0
+  currentHealth: 0
+  healthLevel: 10
+  maxHealth: 0
+  currentHealth: 0
 --- !u!1001 &168848055
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2019,6 +2017,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886dc972eb1e42746856a8867986fdfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackState: {fileID: 978229964}
+  enemy: {fileID: 163853806}
+  player: {fileID: 2134221131}
+  attackRange: 3
+  isInAttackRange: 0
+  chaseState: {fileID: 1334117325}
+  animator: {fileID: 163853800}
 --- !u!4 &978229965
 Transform:
   m_ObjectHideFlags: 0
@@ -2403,14 +2408,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f5a1cf7cb76564fa46ed1f33626fb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackState: {fileID: 0}
-  enemy: {fileID: 0}
-  player: {fileID: 0}
-  chaseSpeed: 5
-  rotationSpeed: 100
-  attackRange: 3
+  attackState: {fileID: 978229964}
+  enemy: {fileID: 163853806}
+  player: {fileID: 2134221131}
+  chaseSpeed: 1
+  rotationSpeed: 71.45
+  attackRange: 2
   isInAttackRange: 0
-  animator: {fileID: 0}
+  animator: {fileID: 163853800}
 --- !u!4 &1334117326
 Transform:
   m_ObjectHideFlags: 0

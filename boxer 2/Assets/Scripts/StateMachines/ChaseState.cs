@@ -13,21 +13,30 @@ public class ChaseState : State
     public bool isInAttackRange = false;
 
 
+    // Indicates if an attack is currently in progress
+    private bool isAttacking = false;
+
     public Animator animator;
 
-    private void Update()
+    public override State RunCurrentState()
+    {
+        UpdateAttackRangeStatus();
+
+        if (isInAttackRange)
+        {
+            
+            RotateAroundPlayer();
+            return attackState; // Transition to AttackState
+        }
+
+        ChasePlayer();
+        return this; // Stay in ChaseState
+    }
+
+    private void UpdateAttackRangeStatus()
     {
         float distanceToPlayer = Vector3.Distance(enemy.position, player.position);
-
-        if (distanceToPlayer <= attackRange)
-        {
-            isInAttackRange = true;
-        }
-        else
-        {
-            isInAttackRange = false;
-            ChasePlayer();
-        }
+        isInAttackRange = distanceToPlayer <= attackRange;
     }
 
     private void ChasePlayer()
@@ -46,17 +55,6 @@ public class ChaseState : State
        
         animator.SetFloat("Yaxis", localDir.x * chaseSpeed);
         animator.SetFloat("Xaxis", localDir.z * chaseSpeed);
-    }
-
-
-    public override State RunCurrentState()
-    {
-        if (isInAttackRange)
-        {
-            RotateAroundPlayer();
-            return attackState;
-        }
-        return this;
     }
 
     private void RotateAroundPlayer()
