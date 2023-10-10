@@ -53,7 +53,7 @@ public class AttackState : State
         isInAttackRange = distanceToPlayer <= attackRange;
     }
 
-    
+
     private void RandomAttack()
     {
 

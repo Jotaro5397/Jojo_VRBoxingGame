@@ -46,13 +46,13 @@ public class ChaseState : State
         // Move towards the player
         enemy.position += direction * chaseSpeed * Time.deltaTime;
 
-        // Look at the player, but only adjust the Y rotation
+        
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         enemy.rotation = Quaternion.Slerp(enemy.rotation, lookRotation, Time.deltaTime * rotationSpeed);
         enemy.eulerAngles = new Vector3(0, enemy.eulerAngles.y, 0);
         Vector3 localDir = enemy.InverseTransformDirection(direction);
 
-       
+        
         animator.SetFloat("Yaxis", localDir.x * chaseSpeed);
         animator.SetFloat("Xaxis", localDir.z * chaseSpeed);
     }
